@@ -1,7 +1,28 @@
 import joi from 'joi';
-import bcrypt from 'bcrypt';
 
 import db from '../db.js';
+
+export async function signInValidation(req, res, next) {
+    const {email, password} = req.body;
+    console.log('body do login', req.body);
+
+    const user = {
+        email: email,
+        password: password
+    }
+    const schema = joi.object({
+        email: joi.string().required().pattern(/\S+@\S+\.\S+/),
+        password: joi.string().required()
+    });
+    const validation = schema.validate(user);
+    if (validation.error) {
+        console.log('Erro ao logar usuário', validation.error);
+        res.status(422).send(`Erro ao logar usuario, ${validation.error}`);
+        return;
+    }
+
+    next();
+}
 
 export async function signUpValidation(req, res, next) {
     const {name, email, password, confirmPassword} = req.body;
