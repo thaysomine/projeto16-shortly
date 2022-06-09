@@ -28,3 +28,25 @@ export async function postUrl (req, res) {
         res.status(500).send(`Erro ao cadastrar url, ${e}`);
     }
 }
+
+export async function getUrl (req, res) {
+    const {id} = req.params;
+
+    try {
+        const checkUrl = await db.query(`
+            SELECT l.id, l."shortUrl", u.url 
+            FROM links l
+            JOIN urls u 
+            ON "urlId" = u.id
+            WHERE l.id = $1
+        `, [id]);
+        if (checkUrl.rows.length === 0) {
+            res.status(404).send('Url não encontrada');
+            return;
+        }
+        res.status(200).send(checkUrl.rows[0]);
+    } catch (e) {
+        console.log('Erro ao buscar url', e);
+        res.status(500).send(`Erro ao buscar url, ${e}`);
+    }
+}
