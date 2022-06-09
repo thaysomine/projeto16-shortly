@@ -41,7 +41,7 @@ export async function signUp(req, res) {
         await db.query('INSERT INTO users (name, email, password) VALUES ($1, $2, $3)', [name, email, hash]);
         res.sendStatus(201);
     } catch (e) {
-        res.status(422).send('Erro ao cadastrar usuário');
+        res.status(500).send('Erro ao cadastrar usuário');
         console.log('Erro ao cadastrar usuário', e);
         return;
     }
