@@ -50,3 +50,27 @@ export async function getUrl (req, res) {
         res.status(500).send(`Erro ao buscar url, ${e}`);
     }
 }
+
+export async function getShortUrl (req, res) {
+    const {shortUrl} = req.params;
+
+    try {
+        const checkShortUrl = await db.query(`SELECT * FROM links WHERE "shortUrl" = $1`, [shortUrl]);
+        if (checkShortUrl.rows.length === 0) {
+            res.status(404).send('Url encurtada não encontrada');
+            return;
+        }
+        await db.query('UPDATE links SET views = views + 1 WHERE "shortUrl" = $1', [shortUrl]);
+        const linkUrl = await db.query(`
+            SELECT l.id, u.url 
+            FROM links l
+            JOIN urls u 
+            ON "urlId" = u.id
+            WHERE l."shortUrl" = $1
+        `, [shortUrl]);
+        res.redirect(linkUrl.rows[0].url);
+    } catch (e) {
+        console.log('Erro ao buscar url encurtada', e);
+        res.status(500).send(`Erro ao buscar url encurtada, ${e}`);
+    }
+}
