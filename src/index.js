@@ -3,7 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-import db from './db.js';
 import authRouter from './routes/authRouter.js';
 import urlsRouter from './routes/urlsRouter.js';
 import usersRouter from './routes/usersRouter.js';

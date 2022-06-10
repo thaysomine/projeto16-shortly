@@ -17,9 +17,7 @@ export async function getUser (req, res) {
         }
         const shortenedUrls = [];
         let totalViews = 0;
-        console.log(user.rows);
         user.rows.map(link => {
-            console.log(link);
             if(link.linkId !== null) {
                 let obj = {
                     id: link.linkId,
@@ -39,7 +37,6 @@ export async function getUser (req, res) {
         }
         res.status(200).send(userObj);
     } catch (error) {
-        console.log(error)
         res.status(500).send(error);
     }
 }
@@ -55,7 +52,6 @@ export async function getRanking(req, res) {
         `);      
         res.status(200).send(rows);
     } catch (error) {
-        console.log(error)
         res.status(500).send(error);
     }
 }

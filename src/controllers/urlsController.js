@@ -1,4 +1,3 @@
-import joi from 'joi';
 import { nanoid } from 'nanoid';
 
 import db from '../db.js';
@@ -20,7 +19,6 @@ export async function getUrl (req, res) {
         }
         res.status(200).send(checkUrl.rows[0]);
     } catch (e) {
-        console.log('Erro ao buscar url', e);
         res.status(500).send(`Erro ao buscar url, ${e}`);
     }
 }
@@ -44,7 +42,6 @@ export async function getShortUrl (req, res) {
         `, [shortUrl]);
         res.redirect(linkUrl.rows[0].url);
     } catch (e) {
-        console.log('Erro ao buscar url encurtada', e);
         res.status(500).send(`Erro ao buscar url encurtada, ${e}`);
     }
 }
@@ -66,11 +63,9 @@ export async function postUrl (req, res) {
         const shortUrlObj = {
             shortUrl: shortUrl
         }
-        console.log('url', checkUrl.rows[0].url);
         await db.query('INSERT INTO links ("userId", "urlId", "shortUrl") VALUES ($1, $2, $3)', [userId, checkUrl.rows[0].id, shortUrl]);
         res.status(201).send(shortUrlObj);
     } catch (e) {
-        console.log('Erro ao cadastrar url', e);
         res.status(500).send(`Erro ao cadastrar url, ${e}`);
     }
 }
@@ -82,7 +77,6 @@ export async function deleteUrl (req, res) {
         await db.query('DELETE FROM links WHERE id = $1', [id]);
         res.sendStatus(204);
     } catch (e) {
-        console.log('Erro ao deletar url', e);
         res.status(500).send(`Erro ao deletar url, ${e}`);
     }
 }

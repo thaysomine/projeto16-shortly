@@ -1,6 +1,4 @@
 import joi from 'joi';
-import { nanoid } from 'nanoid';
-
 import db from '../db.js';
 
 export async function postUrlValidation (req, res, next) {
@@ -14,7 +12,6 @@ export async function postUrlValidation (req, res, next) {
     });
     const validation = schema.validate(body);
     if (validation.error) {
-        console.log('Erro ao cadastrar url', validation.error);
         res.status(422).send(`Erro ao cadastrar url, ${validation.error}`);
         return;
     }
@@ -26,7 +23,6 @@ export async function postUrlValidation (req, res, next) {
             return;
         }
     } catch (e) {
-        console.log('Erro de validação', e);
         res.status(500).send(`Erro de validação, ${e}`);
     }
 
@@ -49,7 +45,6 @@ export async function deleteUrlValidation (req, res, next) {
         const checkUserId = await db.query('SELECT * FROM links WHERE id = $1 AND "userId" = $2', [id, userId]);
         if (checkUserId.rows.length === 0) return res.status(401).send('Não autorizado');
     } catch (e) {
-        console.log('Erro de validação ao deletar url', e);
         res.status(500).send(`Erro de validação ao deletar url, ${e}`);
     }
 
