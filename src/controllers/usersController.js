@@ -11,10 +11,6 @@ export async function getUser (req, res) {
         LEFT JOIN urls ON l."urlId" = urls.id
         WHERE u.id = $1
         `, [id]);
-        if (user.rows.length === 0) {
-            res.status(404).send('Usuário não encontrado');
-            return;
-        }
         const shortenedUrls = [];
         let totalViews = 0;
         user.rows.map(link => {
