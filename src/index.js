@@ -16,7 +16,4 @@ app.use(authRouter);
 app.use(urlsRouter);
 app.use(usersRouter);
 
-app.listen(5000, () => {
-    console.clear();
-    console.log('server started');
-});
+app.listen(process.env.PORT || 5000, () => console.log('Server started'));
