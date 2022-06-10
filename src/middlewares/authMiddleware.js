@@ -43,7 +43,7 @@ export async function signUpValidation(req, res, next) {
     const validation = schema.validate(user);
     if(validation.error){
         console.log('Erro ao cadastrar usuário', validation.error);
-        res.status(422).send('Erro ao cadastrar usuario', validation.error);
+        res.status(422).send(`Erro ao cadastrar usuario, ${validation.error}`);
         return;
     }
 
